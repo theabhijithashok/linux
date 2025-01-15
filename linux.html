@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background: var(--background-color);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .logo-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            animation: float 3s ease-in-out infinite;
+            background: rgb(255, 255, 255);
+            border-radius: 50%;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            background-image: url('tux.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        nav {
+            background: rgba(44, 62, 80, 0.95);
+            padding: 1.5rem;
+            position: relative;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        nav a:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav a:hover::before {
+            transform: translateX(100%);
+        }
+
+        nav a.active {
+            background: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .command-section {
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            scroll-margin-top: 100px;
+            border-left: 4px solid transparent;
+        }
+
+        .command-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .command-section:target {
+            transform: translateY(-5px);
+            background: linear-gradient(to right, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        @keyframes highlight {
+            0% {
+                background: linear-gradient(to right, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+                transform: scale(1.01);
+            }
+            50% {
+                background: linear-gradient(to right, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+                transform: scale(1.005);
+            }
+            100% {
+                background: linear-gradient(to right, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+                transform: scale(1);
+            }
+        }
+
+        .command-section:target {
+            animation: highlight 0.5s ease-out;
+        }
+
+        .command-section:target .command-name {
+            color: var(--primary-color);
+        }
+
+        .command-section:target::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            animation: pulse 2s ease-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(0.95);
+            }
+            70% {
+                opacity: 0;
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+
+        .command-name {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: block;
+        }
+
+        .command-description {
+            background: rgba(74, 144, 226, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            line-height: 1.8;
+        }
+
+        .command-syntax {
+            background: #2c3e50;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            text-align: left;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.3rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        ul li {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 1.8rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .example-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        code {
+            background: #f1f1f1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-color);
+            margin: 0.3rem 0;
+            display: inline-block;
+        }
+
+        .command-output {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            position: relative;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .tips-section {
+            background: rgba(231, 76, 60, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .warning, .note {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .warning {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .note {
+            background: rgba(241, 196, 15, 0.1);
+            border-left: 4px solid #f1c40f;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .command-section {
+            animation: slideIn 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .command-section:nth-child(odd) {
+            animation-delay: 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .command-section {
+                padding: 1.5rem;
+                margin: 1.5rem auto;
+            }
+            
+            .command-name {
+                font-size: 1.8rem;
+            }
+            
+            nav {
+                padding: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .example, .command-output, .tips-section, .warning, .note {
+                padding: 1.2rem;
+                margin: 1.2rem 0;
+            }
+        }
+
+        /* Return to Top Button */
+        .return-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .return-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .return-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .return-to-top svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .return-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 3rem;
+                height: 3rem;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            margin-top: 1.5rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-links {
+                gap: 1rem;
+                flex-direction: column;
+            }
+        }
+
+        .command-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .command-image:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --primary-color: #6d9eeb;
+            --secondary-color: #a8b9cc;
+            --accent-color: #ff6b6b;
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-background: #2d2d2d;
+            --code-background: #3a3a3a;
+            --example-background: #2a2a2a;
+            --note-background: rgba(241, 196, 15, 0.15);
+            --warning-background: rgba(231, 76, 60, 0.15);
+            --tips-background: rgba(74, 144, 226, 0.15);
+        }
+
+        [data-theme="dark"] body {
+            background: var(--background-color);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .command-section {
+            background: var(--card-background);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .command-name {
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .command-description {
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        [data-theme="dark"] .command-syntax {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] code {
+            background: var(--code-background);
+            color: #ff6b6b;
+        }
+
+        [data-theme="dark"] .example {
+            background: var(--example-background);
+            border-left-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .example-title {
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .tips-section {
+            background: var(--tips-background);
+        }
+
+        [data-theme="dark"] .warning {
+            background: var(--warning-background);
+            border-left-color: #e74c3c;
+        }
+
+        [data-theme="dark"] .note {
+            background: var(--note-background);
+            border-left-color: #f1c40f;
+        }
+
+        [data-theme="dark"] .command-image {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .command-image:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] h3 {
+            color: var(--text-color);
+        }
+
+        /* Theme toggle styles */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1001;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: currentColor;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            color: #fff;
+        }
+
+        [data-theme="light"] .theme-toggle {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .theme-toggle {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+
+        .founder-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(74, 144, 226, 0.1);
+            border-radius: 8px;
+        }
+
+        .founder-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .founder-image {
+            width: 150px;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 3px solid #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .founder-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .founder-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        [data-theme="dark"] .founder-image {
+            border-color: #2d2d2d;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z"/>
+        </svg>
+    </button>
+
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo"></div>
+        </div>
+        <h1>Linux File and Directory Commands</h1>
+        <p>Master the essential commands for file and directory manipulation in Linux</p>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#ls">ls</a></li>
+            <li><a href="#cd">cd</a></li>
+            <li><a href="#pwd">pwd</a></li>
+            <li><a href="#mkdir">mkdir</a></li>
+            <li><a href="#rmdir">rmdir</a></li>
+            <li><a href="#cp">cp</a></li>
+            <li><a href="#mv">mv</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#touch">touch</a></li>
+            <li><a href="#grep">grep</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="command-section" id="intro">
+            <h2 class="command-name">Linux</h2>
+            <div class="command-description">
+                <p>Linux, created by Linus Torvalds in 1991 while he was a student at the University of Helsinki, has grown from a hobby project into the world's most widely used operating system kernel. It began as an alternative to MINIX and has evolved into a cornerstone of modern computing.</p>
+            </div>
+
+            <div class="founder-section">
+                <h3>About the Founder:</h3>
+                <div class="founder-info">
+                    <img src="linus.jpg" alt="Linus Torvalds" class="founder-image">
+                    <ul>
+                        <li><strong>Name:</strong> Linus Benedict Torvalds</li>
+                        <li><strong>Born:</strong> December 28, 1969, Helsinki, Finland</li>
+                        <li><strong>Known for:</strong> Creating Linux Kernel and Git</li>
+                        <li><strong>Philosophy:</strong> "Talk is cheap. Show me the code."</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Linux Evolution:</h3>
+            <ul>
+                <li><strong>1991:</strong> First Linux release (version 0.02)</li>
+                <li><strong>1994:</strong> Version 1.0 released</li>
+                <li><strong>1996:</strong> Tux the penguin becomes the mascot</li>
+                <li><strong>2011:</strong> Version 3.0 released</li>
+                <li><strong>Present:</strong> Powers 96.3% of the world's top servers</li>
+            </ul>
+
+            <div class="tips-section">
+                <p class="tips-title">Why Linux?</p>
+                <ul>
+                    <li>Free and Open Source Software (FOSS)</li>
+                    <li>Highly secure and stable</li>
+                    <li>Vast community support</li>
+                    <li>Powers Android, servers, and supercomputers</li>
+                    <li>Customizable to any need</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <p><strong>Fun Fact:</strong> The name "Linux" was not Linus's choice. He wanted to call it "Freax" (combining "free," "freak," and "Unix"), but his friend who hosted the files named the directory "Linux" after Linus.</p>
+            </div>
+        </div>
+
+        <div class="command-section" id="ls">
+            <h2 class="command-name">ls (List)</h2>
+            <div class="command-description">
+                <p>The <code>ls</code> command is essential for viewing directory contents. It displays files and directories with detailed information about permissions, ownership, size, and modification times.</p>
+            </div>
+            <div class="command-syntax">ls [options] [directory]</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-l</code>: Long listing format with detailed information</li>
+                <li><code>-a</code>: Show all files including hidden ones (starting with .)</li>
+                <li><code>-h</code>: Human-readable sizes (KB, MB, GB)</li>
+                <li><code>-R</code>: Recursive listing of subdirectories</li>
+                <li><code>-t</code>: Sort by modification time, newest first</li>
+                <li><code>-S</code>: Sort by file size, largest first</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image.png" alt="Example of basic ls usage" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Use <code>ls -lh</code> for readable file sizes</li>
+                    <li>Use <code>ls -la</code> to see hidden files with details</li>
+                    <li>Use <code>ls -ltr</code> to see latest modified files at bottom</li>
+                    <li>Use <code>ls --color=auto</code> for colored output</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="cd">
+            <h2 class="command-name">cd (Change Directory)</h2>
+            <div class="command-description">
+                <p>The <code>cd</code> command is used to navigate the filesystem hierarchy. It supports absolute paths, relative paths, and special shortcuts for efficient navigation.</p>
+            </div>
+            <div class="command-syntax">cd [directory]</div>
+            <h3>Special Directories:</h3>
+            <ul>
+                <li><code>cd ~</code>: Go to home directory</li>
+                <li><code>cd -</code>: Go to previous directory</li>
+                <li><code>cd ..</code>: Move up one directory</li>
+                <li><code>cd .</code>: Current directory</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (10).jpg.png" alt="Example of basic cd usage" class="command-image">
+            </div>
+            <div class="note">
+                <p><strong>Note:</strong> Using <code>cd</code> without arguments returns to home directory. Use <code>cd -</code> to toggle between last two directories.</p>
+            </div>
+        </div>
+
+        <div class="command-section" id="pwd">
+            <h2 class="command-name">pwd (Print Working Directory)</h2>
+            <div class="command-description">
+                <p>The <code>pwd</code> command displays your current location in the filesystem. It helps you verify your position and construct absolute paths.</p>
+            </div>
+            <div class="command-syntax">pwd [options]</div>
+            <h3>Options:</h3>
+            <ul>
+                <li><code>-P</code>: Show physical path (resolve symlinks)</li>
+                <li><code>-L</code>: Show logical path (follow symlinks)</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (7).png" alt="Example of pwd command usage" class="command-image">
+            </div>
+        </div>
+
+        <div class="command-section" id="mkdir">
+            <h2 class="command-name">mkdir (Make Directory)</h2>
+            <div class="command-description">
+                <p>Create new directories with the <code>mkdir</code> command. This command can create single directories, multiple directories, and nested directory structures with proper permissions.</p>
+            </div>
+            <div class="command-syntax">mkdir [options] directory_name(s)</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-p</code>: Create parent directories if they don't exist</li>
+                <li><code>-m</code>: Set file permissions</li>
+                <li><code>-v</code>: Print a message for each directory created</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (1).png" alt="Example of basic mkdir usage" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Use <code>mkdir -p parent/child/grandchild</code> for nested directories</li>
+                    <li>Use <code>mkdir -m 755 directory</code> to set specific permissions</li>
+                    <li>Create multiple directories with <code>mkdir dir1 dir2 dir3</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="rmdir">
+            <h2 class="command-name">rmdir (Remove)</h2>
+            <div class="command-description">
+                <p>Remove files and directories using these commands. The <code>rmdir</code> command removes empty directories, while <code>rm</code> can remove both files and directories with content.</p>
+            </div>
+            <div class="command-syntax">
+                rmdir [options] directory_name<br>
+                rm [options] file/directory
+            </div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>rm -r</code>: Remove directories and their contents recursively</li>
+                <li><code>rm -f</code>: Force removal without confirmation</li>
+                <li><code>rm -i</code>: Interactive mode (prompt before removal)</li>
+                <li><code>rm -v</code>: Verbose mode (explain what's being done)</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (2).png" alt="Example of rm command usage" class="command-image">
+            </div>
+            <div class="warning">
+                <p><strong>Warning:</strong> The <code>rm -rf</code> command is very dangerous! It will delete everything without confirmation and cannot be undone.</p>
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Safety Tips:</p>
+                <ul>
+                    <li>Always double-check before using rm with wildcards (*)</li>
+                    <li>Use <code>rm -i</code> for interactive deletion</li>
+                    <li>Consider using <code>trash-cli</code> for safer file deletion</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="cp">
+            <h2 class="command-name">cp (Copy)</h2>
+            <div class="command-description">
+                <p>Copy files and directories from one location to another. Preserves file attributes and handles recursive directory copying with proper options.</p>
+            </div>
+            <div class="command-syntax">cp [options] source destination</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-r, -R</code>: Copy directories recursively</li>
+                <li><code>-p</code>: Preserve file attributes (mode, ownership, timestamps)</li>
+                <li><code>-i</code>: Interactive mode (prompt before overwrite)</li>
+                <li><code>-u</code>: Update - copy only when source is newer</li>
+                <li><code>-v</code>: Verbose mode</li>
+                <li><code>-a</code>: Archive mode (same as -dR --preserve=all)</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (4).png" alt="Example of basic cp usage" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Use <code>cp -a</code> to preserve all file attributes</li>
+                    <li>Use <code>cp -u</code> for backup and sync operations</li>
+                    <li>Use <code>cp file{,.backup}</code> to quickly create a backup</li>
+                    <li>Use <code>cp -rv</code> to see what's being copied</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="mv">
+            <h2 class="command-name">mv (Move)</h2>
+            <div class="command-description">
+                <p>Move or rename files and directories. This versatile command can relocate files, rename them, or both simultaneously while preserving attributes.</p>
+            </div>
+            <div class="command-syntax">mv [options] source destination</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-i</code>: Interactive mode (prompt before overwrite)</li>
+                <li><code>-f</code>: Force move without confirmation</li>
+                <li><code>-n</code>: No overwrite mode</li>
+                <li><code>-v</code>: Verbose mode</li>
+                <li><code>-u</code>: Update - move only when source is newer</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (6).png" alt="Example of moving files" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Use <code>mv -i</code> to prevent accidental overwrites</li>
+                    <li>Use <code>mv file{.old,.new}</code> for quick renaming</li>
+                    <li>Move multiple files with wildcards: <code>mv *.txt directory/</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="cat">
+            <h2 class="command-name">cat (Concatenate)</h2>
+            <div class="command-description">
+                <p>View, create, and concatenate files. This versatile command can display file contents, create new files, combine multiple files, and redirect output to other commands.</p>
+            </div>
+            <div class="command-syntax">cat [options] [file(s)]</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-n</code>: Number all output lines</li>
+                <li><code>-b</code>: Number non-blank output lines</li>
+                <li><code>-A</code>: Show all non-printing characters</li>
+                <li><code>-s</code>: Suppress repeated empty output lines</li>
+                <li><code>-E</code>: Display $ at end of each line</li>
+                <li><code>-T</code>: Display TAB characters as ^I</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (5).png" alt="Example of concatenating files" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Use <code>cat > file.txt</code> to create and write to a new file</li>
+                    <li>Use <code>cat file1 file2 > combined.txt</code> to merge files</li>
+                    <li>Use <code>cat -n file.txt | less</code> for paginated output</li>
+                    <li>Use <code>cat << EOF</code> for here-documents in scripts</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="touch">
+            <h2 class="command-name">touch</h2>
+            <div class="command-description">
+                <p>Create empty files or update file timestamps. This command is essential for file creation, timestamp manipulation, and build system management.</p>
+            </div>
+            <div class="command-syntax">touch [options] file(s)</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-a</code>: Change only the access time</li>
+                <li><code>-m</code>: Change only the modification time</li>
+                <li><code>-c</code>: Don't create new files</li>
+                <li><code>-d</code>: Set specific date/time</li>
+                <li><code>-r</code>: Use timestamp from reference file</li>
+                <li><code>-t</code>: Set specific timestamp (YYYYMMDDHHMM.SS)</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (8).png" alt="Example of creating new files" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Create multiple files: <code>touch file1 file2 file3</code></li>
+                    <li>Update timestamp to current time: <code>touch existing_file</code></li>
+                    <li>Set specific date: <code>touch -d "2023-12-25 12:00" file</code></li>
+                    <li>Match timestamp with another file: <code>touch -r reference_file target_file</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="command-section" id="grep">
+            <h2 class="command-name">grep (Global Regular Expression Print)</h2>
+            <div class="command-description">
+                <p>Search for patterns in files using regular expressions or simple text. A powerful tool for text searching, filtering, and pattern matching across files and directories.</p>
+            </div>
+            <div class="command-syntax">grep [options] pattern [file(s)]</div>
+            <h3>Common Options:</h3>
+            <ul>
+                <li><code>-i</code>: Case-insensitive search</li>
+                <li><code>-r</code>: Recursive search in directories</li>
+                <li><code>-l</code>: Show only filenames with matches</li>
+                <li><code>-n</code>: Show line numbers</li>
+                <li><code>-v</code>: Invert match (show non-matching lines)</li>
+                <li><code>-w</code>: Match whole words only</li>
+                <li><code>-A n</code>: Show n lines after match</li>
+                <li><code>-B n</code>: Show n lines before match</li>
+                <li><code>-C n</code>: Show n lines before and after match</li>
+            </ul>
+            <div class="example">
+                <p class="example-title">Examples:</p>
+                <img src="image (9).png" alt="Example of basic grep usage" class="command-image">
+            </div>
+            <div class="tips-section">
+                <p class="tips-title">Pro Tips:</p>
+                <ul>
+                    <li>Search recursively: <code>grep -r "pattern" directory/</code></li>
+                    <li>Count matches: <code>grep -c "pattern" file</code></li>
+                    <li>Use extended regex: <code>grep -E "pattern1|pattern2" file</code></li>
+                    <li>Exclude directories: <code>grep --exclude-dir={dir1,dir2} -r "pattern"</code></li>
+                    <li>Search multiple patterns: <code>grep -e "pattern1" -e "pattern2" file</code></li>
+                </ul>
+            </div>
+            <div class="note">
+                <p><strong>Note:</strong> Grep supports basic and extended regular expressions for powerful pattern matching.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">
+               <p>Created by Abhijtih Ashokan</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="return-to-top" id="return-to-top" aria-label="Return to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 4L4 16h16L12 4z" fill="currentColor"/>
+        </svg>
+    </a>
+
+    <script>
+        // Return to Top Button Functionality
+        const returnToTop = document.getElementById('return-to-top');
+        
+        // Show button when scrolling down
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                returnToTop.classList.add('visible');
+            } else {
+                returnToTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll to top
+        returnToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Set initial theme
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</body>
+</html>
